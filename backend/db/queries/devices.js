@@ -1,12 +1,13 @@
 import db from "#db/client";
 
-export async function createDevice(name, wattage) {
+// CREATE adds a device row to the devices table
+export async function createDevice(name, wattage){
   const sql = `
-  INSERT INTO devices
-    (name, wattage)
-  VALUES
-    ($1, $2)
-  RETURNING *
+    INSERT INTO devices
+      (name, wattage)
+    VALUES
+      ($1, $2)
+    RETURNING *
   `;
   try {
     const {
@@ -18,36 +19,75 @@ export async function createDevice(name, wattage) {
   }
 };
 
-export async function getDevices() {
+
+// GET retrieves all devices
+export async function getDevices(){
   const sql = `
-  SELECT *
-  FROM devices
+    SELECT *
+    FROM devices
   `;
-  const { rows: devices } = await db.query(sql);
-  return devices;
+  try{
+    const { rows: devices } = await db.query(sql);
+    return devices;
+  }catch(err){
+    console.error('Error retrieving all devices:', err);
+    throw err;
+  };
 };
 
-export async function getDevicesByUserId(id) {
+// GET retrieves a device by id
+export async function getDeviceById(id){
   const sql = `
-  SELECT devices.*
-  FROM
-    devices
-    JOIN playlists_tracks ON playlists_tracks.track_id = tracks.id
-    JOIN playlists ON playlists.id = playlists_tracks.playlist_id
-  WHERE playlists.id = $1
+    SELECT *
+    FROM devices
+    WHERE id = $1
   `;
-  const { rows: tracks } = await db.query(sql, [id]);
-  return devices;
-}
+  try{
+    const { rows: [device],} = await db.query(sql, [id]);
+    return device;
+  }catch(err){
+    console.error('Error retrieving device:', err);
+    throw err;
+  };
+};
 
-export async function getDeviceById(id) {
+// PATCH updates Device fields using ids
+export async function updateDevice(id, fields){
+  // uses object.keys() method to check if object is null
+  const keys = Object.keys(fields);
+  if (keys.length === 0) return null;
+
+  // maps the key over the updated field in devices
+  const deviceField = keys.map((key, i) => `${key}= $${i+1}`).join(',');
+  const values = [...keys.map(k=>fields[k]),id];
+
   const sql = `
-  SELECT *
-  FROM deviecs
-  WHERE id = $1
+      UPDATE devices
+      SET ${deviceField}
+      WHERE id = $${keys.length+1}
+      RETURNING *  
   `;
-  const {
-    rows: [track],
-  } = await db.query(sql, [id]);
-  return devices;
+  try{
+    const {rows:[device]} = await db.query(sql, values);
+    return device;
+  }catch(err){
+    console.error('Error updating device:', err);
+    throw err;
+  };
+};
+
+// DELETE removes device from table
+export async function deleteDevice(id){
+  const sql = `
+    DELETE FROM devices
+    WHERE id = $1
+    RETURNING *
+  `;
+  try{
+    const {rows: [device]} = await db.query(sql,[id]);
+    return device;
+  }catch(err){
+    console.error('Error deleting device:', err);
+    throw err;
+  };
 };
