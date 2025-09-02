@@ -8,42 +8,46 @@ export async function createDevice(name, wattage) {
     ($1, $2)
   RETURNING *
   `;
-  const {
-    rows: [track],
-  } = await db.query(sql, [name, durationMs]);
-  return track;
-}
+  try {
+    const {
+    rows: [device],
+  } = await db.query(sql, [name, wattage]);
+  return device;
+  }catch(err){
+    console.error('Error creating device:', err);
+  }
+};
 
 export async function getDevices() {
   const sql = `
   SELECT *
   FROM devices
   `;
-  const { rows: tracks } = await db.query(sql);
-  return tracks;
-}
+  const { rows: devices } = await db.query(sql);
+  return devices;
+};
 
-export async function getTracksByPlaylistId(id) {
+export async function getDevicesByUserId(id) {
   const sql = `
-  SELECT tracks.*
+  SELECT devices.*
   FROM
-    tracks
+    devices
     JOIN playlists_tracks ON playlists_tracks.track_id = tracks.id
     JOIN playlists ON playlists.id = playlists_tracks.playlist_id
   WHERE playlists.id = $1
   `;
   const { rows: tracks } = await db.query(sql, [id]);
-  return tracks;
+  return devices;
 }
 
-export async function getTrackById(id) {
+export async function getDeviceById(id) {
   const sql = `
   SELECT *
-  FROM tracks
+  FROM deviecs
   WHERE id = $1
   `;
   const {
     rows: [track],
   } = await db.query(sql, [id]);
-  return track;
-}
+  return devices;
+};
