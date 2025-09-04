@@ -1,16 +1,16 @@
 import db from "#db/client";
 
 // CREATE adds a device row to the user devices table
-export async function addUserDevice(userId, deviceId, customDevice, usageAlgorithm){
+export async function addUserDevice(userId, deviceId, customDevice, usageAlgorithm, usageHours){
     const sql = `
         INSERT INTO user_devices
-            (user_id, device_id, custom_device, usage_algorithm)
+            (user_id, device_id, custom_device, usage_algorithm, usage_hours)
         VALUES 
-            ($1, $2, $3, $4)
+            ($1, $2, $3, $4, $5)
         RETURNING *
     `;
     try{
-        const { rows: [userDevice] } = await db.query(sql, [userId, deviceId, customDevice, usageAlgorithm]);
+        const { rows: [userDevice] } = await db.query(sql, [userId, deviceId, customDevice, usageAlgorithm, usageHours]);
         return userDevice;
     }catch(err){
         console.error('Error adding device to user:', err);
@@ -18,10 +18,25 @@ export async function addUserDevice(userId, deviceId, customDevice, usageAlgorit
     };
 };
 
+// GET retireves all user deviecs
+export async function getAllUserDevices(){
+    const sql = `
+    SELECT *
+    FROM user_devices
+    `;
+    try{
+        const { rows: [userDevices] } = await db.query(sql);
+        return userDevices;
+    }catch(err){
+        console.error('Error fetching all user devices:', err);
+        throw err;
+    };
+}
+
 // GET retrieves a device by user id
 export async function getDevicesByUserId(id){
   const sql = `
-        SELECT devices.*
+        SELECT devices.*, user_devices.usage_algorithm, user_devices.usage_hours
         FROM devices
         JOIN user_devices ON user_devices.device_id = devices.id
         WHERE user_devices.user_id = $1
