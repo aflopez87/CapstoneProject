@@ -17,7 +17,6 @@ CREATE TABLE devices (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     wattage DECIMAL NOT NULL,
-    category TEXT,
     verified BOOLEAN DEFAULT FALSE,
     admin_update BOOLEAN DEFAULT FALSE
 );
