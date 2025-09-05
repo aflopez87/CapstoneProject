@@ -1,7 +1,7 @@
-import db from "#db/client";
+import db from "../client.js";
 
 // CREATE adds a utility row to the utilities table
-export async function createUtility(name, location, peakRate, offPeakRate){
+export async function createUtility({name, location, peakRate, offPeakRate}){
     const sql = `
     INSERT INTO utilities    
         (name, location, peak_rate, off_peak_rate)
@@ -10,8 +10,8 @@ export async function createUtility(name, location, peakRate, offPeakRate){
     RETURNING *
     `;
     try{
-        const { rows: [utility] } = await db.query(sql, [name, location, peakRate, offPeakRate]);
-        return utility;
+        const res = await db.query(sql, [name, location, peakRate, offPeakRate]);
+        return res.rows[0];
     }catch(err){
         console.error('Error creating utility:', err);
         throw err;

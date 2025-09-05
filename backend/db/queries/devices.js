@@ -1,7 +1,7 @@
-import db from "#db/client";
+import db from "../client.js";
 
 // CREATE adds a device row to the devices table
-export async function createDevice(name, wattage){
+export async function createDevice({name, wattage}){
   const sql = `
     INSERT INTO devices
       (name, wattage)
@@ -10,10 +10,8 @@ export async function createDevice(name, wattage){
     RETURNING *
   `;
   try {
-    const {
-    rows: [device],
-  } = await db.query(sql, [name, wattage]);
-  return device;
+    const res = await db.query(sql, [name, wattage]);
+    return res.rows[0];
   }catch(err){
     console.error('Error creating device:', err);
   }

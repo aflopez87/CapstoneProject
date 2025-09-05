@@ -1,4 +1,4 @@
-import db from "#db/client";
+import db from "../client.js";
 
 // CREATE adds a device row to the user devices table
 export async function addUserDevice(userId, deviceId, customDevice, usageAlgorithm, usageHours){
@@ -10,8 +10,8 @@ export async function addUserDevice(userId, deviceId, customDevice, usageAlgorit
         RETURNING *
     `;
     try{
-        const { rows: [userDevice] } = await db.query(sql, [userId, deviceId, customDevice, usageAlgorithm, usageHours]);
-        return userDevice;
+        const {rows: userDevices } = await db.query(sql, [userId, deviceId, customDevice, usageAlgorithm, usageHours]);
+        return userDevices;
     }catch(err){
         console.error('Error adding device to user:', err);
         throw err;

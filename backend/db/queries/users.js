@@ -1,8 +1,8 @@
-import db from "#db/client";
+import db from "../client.js";
 import bcrypt from 'bcrypt';
 
 // CREATE adds a user row to the users table
-export async function createUser(name, location, username, password){
+export async function createUser({name, location, username, password}){
     const sql = `
         INSERT INTO users
             (name, location, username, hashed_password)
@@ -12,8 +12,8 @@ export async function createUser(name, location, username, password){
     `;
     try{
         const hashedPassword = await bcrypt.hash(password, 10);
-        const { rows: [user] } = await db.query(sql, [name, location, username, hashedPassword]);
-        return user;
+        const res = await db.query(sql, [name, location, username, hashedPassword]);
+        return res.rows[0];
     }catch(err){
         console.error('Error creating user:', err);
         throw err;

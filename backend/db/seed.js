@@ -1,8 +1,11 @@
+import {faker} from '@faker-js/faker';
+
+import db from "./client.js";
+
 import { createUser } from "./queries/users.js";
 import { addUserDevice } from "./queries/user_devices.js";
 import { createDevice } from "./queries/devices.js";
 import { createUtility } from "./queries/utilities.js";
-import {faker} from '@faker-js/faker';
 
 // seed some users to test capabilities
 const seed = async()=>{
@@ -14,6 +17,7 @@ const seed = async()=>{
             username : faker.internet.username(),
             password : faker.internet.password({ length: 20, memorable: true }) 
         };
+        console.log(newUser)
         const databaseUser = await createUser(newUser);
         users.push(databaseUser);
     };
@@ -22,7 +26,7 @@ const seed = async()=>{
     const devices = [];
     for(let x = 0; x<10;x++){
         const newDevice = {
-            name : faker.device.deviceName(),
+            name : faker.lorem.word(),
             wattage : Math.floor(faker.number.float({ min: 0, max: 10000})),
             verified : true
         };
@@ -51,18 +55,18 @@ const seed = async()=>{
     const userDevices = [];
     const usageAlgorithmMap = {
         "all the time": 24,
-        "during the day": faker.datatype.number({ min: 8, max: 12 }),
-        "at night": faker.datatype.number({ min: 8, max: 10 }),
-        "only on weekends": faker.datatype.number({ min: 16, max: 20 }),
-        "peak hours only": faker.datatype.number({ min: 4, max: 6 }),
-        "off-peak only": faker.datatype.number({ min: 6, max: 10 }),
-        "seasonal usage": faker.datatype.number({ min: 0, max: 12 }),
-        "motion-triggered": faker.datatype.float({ min: 0.5, max: 2, precision: 0.1 }),
-        "manual override": faker.datatype.number({ min: 1, max: 4 }),
-        "smart schedule": faker.datatype.number({ min: 4, max: 10 }),
-        "once a day": faker.datatype.float({ min: 0.5, max: 1, precision: 0.1 }),
-        "once a week": faker.datatype.float({ min: 0.5, max: 2, precision: 0.1 }),
-        "once a month": faker.datatype.float({ min: 1, max: 3, precision: 0.1 })
+        "during the day": faker.number.float({ min: 8, max: 12 }),
+        "at night": faker.number.float({ min: 8, max: 10 }),
+        "only on weekends": faker.number.float({ min: 16, max: 20 }),
+        "peak hours only": faker.number.float({ min: 4, max: 6 }),
+        "off-peak only": faker.number.float({ min: 6, max: 10 }),
+        "seasonal usage": faker.number.float({ min: 0, max: 12 }),
+        "motion-triggered": faker.number.float({ min: 0.5, max: 2, precision: 0.1 }),
+        "manual override": faker.number.float({ min: 1, max: 4 }),
+        "smart schedule": faker.number.float({ min: 4, max: 10 }),
+        "once a day": faker.number.float({ min: 0.5, max: 1, precision: 0.1 }),
+        "once a week": faker.number.float({ min: 0.5, max: 2, precision: 0.1 }),
+        "once a month": faker.number.float({ min: 1, max: 3, precision: 0.1 })
     };
 
     const usageAlgorithms = Object.keys(usageAlgorithmMap);
@@ -89,11 +93,14 @@ const seed = async()=>{
             deviceToUse.id,
             deviceToUse.name,
             usageAlgorithm,
-            usageHours
+            Math.floor(usageHours)
             );
             userDevices.push(databaseUserDevices);
         }
     }
 };
 
-seed();
+await db.connect();
+await seed();
+await db.end();
+console.log("🌱 Database seeded.");
