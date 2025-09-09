@@ -11,7 +11,7 @@ export async function addUserDevice(userId, deviceId, customDevice, usageAlgorit
     `;
     try{
         const {rows: userDevices } = await db.query(sql, [userId, deviceId, customDevice, usageAlgorithm, usageHours]);
-        return userDevices;
+        return userDevices[0];
     }catch(err){
         console.error('Error adding device to user:', err);
         throw err;
@@ -25,7 +25,7 @@ export async function getAllUserDevices(){
     FROM user_devices
     `;
     try{
-        const { rows: [userDevices] } = await db.query(sql);
+        const { rows: userDevices } = await db.query(sql);
         return userDevices;
     }catch(err){
         console.error('Error fetching all user devices:', err);

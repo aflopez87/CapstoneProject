@@ -58,14 +58,29 @@ export async function updateUser(id, fields){
             fields.hashed_password = await bcrypt.hash(fields.password, 10);
             delete fields.password;
         }
-    // uses object.keys() method to check if object is null
-        const keys = Object.keys(fields);
+
+
+        // fields that can be updated
+        const allowedFields = ["name", "location", "username", "password"];
+        const filteredFields = Object.fromEntries(
+            Object.entries(fields).filter(([key]) => allowedFields.includes(key))
+        );
+
+        // if new password, hash it and store in hashed password
+        if (filteredFields.password) {
+            filteredFields.hashed_password = await bcrypt.hash(filteredFields.password, 10);
+            delete filteredFields.password;
+        };
+
+        // check fields to update
+        const keys = Object.keys(filteredFields);
         if (keys.length === 0) return null;
-    
+        
         // maps the key over the updated field in users
-        const userField = keys.map((key, i) => `${key} = $${i + 1}`).join(', ');
-        const values = [...keys.map(k => fields[k]), id];
-    
+        const userField = keys.map((key, i) => `${key} = $${i + 1}`).join(',');
+        const values = [...keys.map(k => filteredFields[k]), id];
+            
+
         const sql = `
             UPDATE users
             SET ${userField}

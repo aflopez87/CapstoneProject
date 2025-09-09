@@ -1,44 +1,140 @@
+// Express setup
 import express from "express";
 const router = express.Router();
-export default router;
 
-import { createUser, authenticateUser, getUserById, updateUser  } from "#db/queries/users";
-import { addUserDevice, getAllUserDevices, updateUserDevice, deleteUserDevice } from "#db/queries/user_devices";
+// Middleware imports
+import getUserFromToken from "#middleware/user_from_token"; 
+import requireUser from "#middleware/require_user";       
+import requireBody from "#middleware/require_body";        
+
+// JWT utility
+// generates auth token
+import { createToken } from "#utils/jwt";
+
+// User imports
+import {
+  createUser,
+  authenticateUser,
+  getUserById,
+  updateUser
+} from "#db/queries/users";
+
+// User devices imports
+import {
+  addUserDevice,
+  getAllUserDevices,
+  updateUserDevice,
+  deleteUserDevice,
+  getUserDeviceById
+} from "#db/queries/user_devices";
+
+// User devices import
+import { getAllDevices } from "#db/queries/devices";
+
+// Utilities import
 import { getUtilities } from "#db/queries/utilities";
-import { getAllDevices, updateDevices } from "#db/queries/devices";
-import { getUserDeviceById } from "../db/queries/user_devices";
 
-// User Registration endpoint
+// Apply token middleware to all routes
+router.use(getUserFromToken);
+
+// Register new user
 router
   .route("/register")
-  // Middleware to make sure 'username' and 'password' are in the request body
-  .post(requireBody(["username", "password"]), async (req, res)=>{
-    const { username, password } = req.body;
-    const user = await createUser(username, password);
-    
+  .post(requireBody(["username", "password", "name", "location"]), async (req, res) => {
+    const { username, password, name, location } = req.body;
+    const user = await createUser({username, password, name, location});
     const token = createToken({ id: user.id });
     res.status(201).send(token);
   });
 
-
-// User Login endpoint
+// Login existing user
 router
   .route("/login")
-  // Middleware to make sure 'username' and 'password' are in the request body
-  .post(requireBody(["username", "password"]), async (req, res) =>{
+  .post(requireBody(["username", "password"]), async (req, res) => {
     const { username, password } = req.body;
-    const user =  await authenticateUser(username, password);
-    if (!user) return res.status(401).send("Invalid email or password")
-    
-      const token = createToken({ id: user.id });
+    const user = await authenticateUser(username, password);
+    // Send message if no user on file
+    if (!user) return res.status(401).send("Invalid email or password");
+    const token = createToken({ id: user.id });
     res.send(token);
   });
 
-// User devices endpoint
+// Get user's devices (home page)
 router
   .route("/home")
-  .get(async (req, res) => {
-  const userDevices = await getUserDevicesById(req.user.id);
-  res.send(userDevices);
-});
+  .get(requireUser, async (req, res) => {
+    const userDevices = await getDevicesByUserId(req.user.id);
+    res.send(userDevices);
+  });
 
+// Add a new device for the user
+router
+  .route("/devices")
+  .post(
+    requireUser,
+    requireBody(["deviceId", "customDevice", "usageAlgorithm", "usageHours"]),
+    async (req, res) => {
+      const { deviceId, customDevice, usageAlgorithm, usageHours } = req.body;
+      const userDevice = await addUserDevice(
+        req.user.id,
+        deviceId,
+        customDevice,
+        usageAlgorithm,
+        usageHours
+      );
+      res.status(201).send(userDevice);
+    }
+  );
+
+// Update an existing user device by device ID
+router
+  .route("/devices/:deviceId")
+  .put(
+    requireUser,
+    requireBody(["usageAlgorithm", "usageHours"]),
+    async (req, res) => {
+      const { deviceId } = req.params;
+      const { usageAlgorithm, usageHours } = req.body;
+      const updatedDevice = await updateUserDevice(
+        req.user.id,
+        deviceId,
+        usageAlgorithm,
+        usageHours
+      );
+      // Check for device, send message if not found
+      if (!updatedDevice) return res.status(404).send("Device not found or failed to update.");
+      res.send(updatedDevice);
+    }
+  );
+
+// Delete a user device
+router
+  .route("/devices/:deviceId")
+  .delete(requireUser, async (req, res) => {
+    const { deviceId } = req.params;
+    await deleteUserDevice(req.user.id, deviceId);
+    res.sendStatus(204);
+  });
+
+// Get all verified devices
+router
+  .route("/devices/all")
+  .get(requireUser, async (req, res) => {
+    const devices = await getAllDevices();
+    res.send(devices);
+  });
+
+// Get and update user's utility
+router
+  .route("/utilities")
+  .get(requireUser, async (req, res) => {
+    const utilities = await getUtilities();
+    res.send(utilities);
+  })
+  .post(requireUser, requireBody(["utilityId"]), async (req, res) => {
+    const { utilityId } = req.body;
+    const updatedUser = await updateUser(req.user.id, { utilityId });
+    res.send(updatedUser);
+  });
+
+export default router;

@@ -8,4 +8,4 @@ export default function requireBody(fields) {
 
     next();
   };
-}
+};
