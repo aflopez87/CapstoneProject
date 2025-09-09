@@ -9,6 +9,6 @@ export default function requireAdmin(req, res, next) {
     return res.status(403).send("Forbidden: Admin access required");
   }
 
-  // User is an admin — proceed to next middleware or route
+  // User is an admin, proceed to next middleware or route
   next();
 }
