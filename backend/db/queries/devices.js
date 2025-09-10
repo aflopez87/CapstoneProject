@@ -1,19 +1,20 @@
 import db from "../client.js";
 
 // CREATE adds a device row to the devices table
-export async function createDevice({name, wattage}){
+export async function createDevice({name, wattage, verified = false, admin_update = false}){
   const sql = `
     INSERT INTO devices
-      (name, wattage)
+      (name, wattage, verified, admin_update)
     VALUES
-      ($1, $2)
+      ($1, $2, $3, $4)
     RETURNING *
   `;
   try {
-    const res = await db.query(sql, [name, wattage]);
+    const res = await db.query(sql, [name, wattage, verified, admin_update]);
     return res.rows[0];
   }catch(err){
     console.error('Error creating device:', err);
+    throw err;
   }
 };
 
@@ -51,13 +52,18 @@ export async function getDeviceById(id){
 
 // PATCH updates Device fields using ids
 export async function updateDevice(id, fields){
-  // uses object.keys() method to check if object is null
-  const keys = Object.keys(fields);
+  // allows only certin fields to be updated
+  const allowedFields = ["name", "wattage", "verified", "admin_update"];
+  const filteredFields = Object.fromEntries(
+    Object.entries(fields).filter(([key]) => allowedFields.includes(key))
+  );
+  
+  const keys = Object.keys(filteredFields);  
   if (keys.length === 0) return null;
 
   // maps the key over the updated field in devices
-  const deviceField = keys.map((key, i) => `${key}= $${i+1}`).join(',');
-  const values = [...keys.map(k=>fields[k]),id];
+  const deviceField = keys.map((key, i) => `${key}= $${i+1}`).join(",");
+  const values = [...keys.map(k => filteredFields[k]),id];
 
   const sql = `
       UPDATE devices

@@ -2,17 +2,17 @@ import db from "../client.js";
 import bcrypt from 'bcrypt';
 
 // CREATE adds a user row to the users table
-export async function createUser({name, location, username, password}){
+export async function createUser({name, location, username, password, role}){
     const sql = `
         INSERT INTO users
-            (name, location, username, hashed_password)
+            (name, location, username, hashed_password, role)
         VALUES
-            ($1, $2, $3, $4)
-        RETURNING *
+            ($1, $2, $3, $4, $5)
+        RETURNING id, name, location, username, role
     `;
     try{
         const hashedPassword = await bcrypt.hash(password, 10);
-        const res = await db.query(sql, [name, location, username, hashedPassword]);
+        const res = await db.query(sql, [name, location, username, hashedPassword, role]);
         return res.rows[0];
     }catch(err){
         console.error('Error creating user:', err);
@@ -23,7 +23,7 @@ export async function createUser({name, location, username, password}){
 // GET retrieves all users
 export async function getAllUsers(){
     const sql = `
-        SELECT *
+        SELECT id, name, location, username, role
         FROM users
     `;
     try{
@@ -59,18 +59,11 @@ export async function updateUser(id, fields){
             delete fields.password;
         }
 
-
         // fields that can be updated
-        const allowedFields = ["name", "location", "username", "password"];
+        const allowedFields = ["name", "location", "username", "password", "role"];
         const filteredFields = Object.fromEntries(
             Object.entries(fields).filter(([key]) => allowedFields.includes(key))
         );
-
-        // if new password, hash it and store in hashed password
-        if (filteredFields.password) {
-            filteredFields.hashed_password = await bcrypt.hash(filteredFields.password, 10);
-            delete filteredFields.password;
-        };
 
         // check fields to update
         const keys = Object.keys(filteredFields);
@@ -79,13 +72,12 @@ export async function updateUser(id, fields){
         // maps the key over the updated field in users
         const userField = keys.map((key, i) => `${key} = $${i + 1}`).join(',');
         const values = [...keys.map(k => filteredFields[k]), id];
-            
 
         const sql = `
             UPDATE users
             SET ${userField}
             WHERE id = $${keys.length+1}
-            RETURNING *
+            RETURNING id, name, location, username, role
         `;
         try{
             const { rows: [user] } = await db.query(sql, values);
@@ -93,7 +85,7 @@ export async function updateUser(id, fields){
         }catch(err){
             console.error('Error updating user:', err);
             throw err;
-        };
+        }
 };
 
 // DELETE removes user from user table
@@ -101,7 +93,7 @@ export async function deleteUser(id){
     const sql = `
         DELETE FROM users
         WHERE id = $1
-        RETURNING *
+        RETURNING id, name, location, username, role
     `;
     try{
         const { rows: [user] } = await db.query(sql, [id]);
@@ -129,6 +121,6 @@ export async function authenticateUser(username, password){
     }catch(err){
         console.error('Authentication failed:', err);
         throw err;
-    };
+    }
 };
 

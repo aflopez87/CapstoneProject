@@ -41,8 +41,13 @@ export async function getDevicesByUserId(id){
         JOIN user_devices ON user_devices.device_id = devices.id
         WHERE user_devices.user_id = $1
   `;
-  const { rows: devices } = await db.query(sql, [id]);
-  return devices;
+  try {
+      const { rows: devices } = await db.query(sql, [id]);
+      return devices;
+  } catch(err) {
+      console.error('Error fetching devices by user id:', err);
+      throw err;
+  }
 };
 
 // GET retrieves a user device by device id
@@ -63,13 +68,26 @@ export async function getUserDeviceById(id){
 
 // PATCH updates user device fields using id
 export async function updateUserDevice(id, fields){
+    // allow only certain fields to be updated
+    const allowedFields = [
+        "custom_device",
+        "usage_algorithm",
+        "usage_hours",
+        "device_approval",
+        "user_update"
+    ];
+
+    const filteredFields = Object.fromEntries(
+        Object.entries(fields).filter(([key]) => allowedFields.includes(key))
+    );
+
     // uses object.keys() method to check if object is null
-    const keys = Object.keys(fields);
+    const keys = Object.keys(filteredFields);
     if (keys.length === 0) return null;
 
     // maps the key over the updated field in user devices
-    const userDeviceField = keys.map((key, i) => `${key} = $${i + 1}`).join(', ');
-    const values = [...keys.map(k => fields[k]), id];
+    const userDeviceField = keys.map((key, i) => `${key} = $${i + 1}`).join(",");
+    const values = [...keys.map(k => filteredFields[k]), id];
 
     const sql = `
         UPDATE user_devices
@@ -98,6 +116,23 @@ export async function deleteUserDevice(id){
         return device;
     }catch(err){
         console.error('Error deleting user device:', err);
+        throw err;
+    };
+};
+
+// Admin only function to approve a user device
+export async function approveUserDevice(id){
+    const sql = `
+        UPDATE user_devices
+        SET device_approval = true
+        WHERE id = $1
+        RETURNING *
+    `;
+    try{
+        const { rows: [device] } = await db.query(sql, [id]);
+        return device;
+    }catch(err){
+        console.error('Error approving user device:', err);
         throw err;
     };
 };
