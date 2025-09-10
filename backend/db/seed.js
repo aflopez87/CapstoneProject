@@ -10,6 +10,20 @@ import { createUtility } from "./queries/utilities.js";
 // seed some users to test capabilities
 const seed = async()=>{
     const users =[];
+    
+    // Creates admin account first
+    const adminUser = {
+        name: "System Administrator",
+        location: "HQ",
+        username: "admin",
+        password: "SecretSecureAdminPassword123",
+        role: "admin"
+    }
+    const dbAdmin = await createUser(adminUser);
+    users.push(dbAdmin);
+    console.log("Admin Account created:", dbAdmin);
+
+    // Seed 10 Random users
     for(let i=0; i<10;i++){
         const newUser = {
             name : faker.person.firstName() +" "+ faker.person.lastName(),
@@ -36,7 +50,7 @@ const seed = async()=>{
 
     // seed utility and rates
     const utilities = [];
-    for(let u = 0; u<10;u++){
+    for(let u = 0; u < 10; u++){
         const offPeakRate = faker.number.float({ min: 0.05, max: 0.25 });
         const peakRate = faker.number.float({ min: offPeakRate + 0.01, max: offPeakRate + 0.5 });
 
@@ -103,4 +117,4 @@ const seed = async()=>{
 await db.connect();
 await seed();
 await db.end();
-console.log("🌱 Database seeded.");
+console.log("Database seeded.");

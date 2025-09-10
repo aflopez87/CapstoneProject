@@ -10,7 +10,9 @@ CREATE TABLE users (
     name TEXT NOT NULL,
     location TEXT NOT NULL,
     username TEXT NOT NULL UNIQUE,
-    hashed_password TEXT NOT NULL
+    hashed_password TEXT NOT NULL,
+    -- Added role column to distinguish admin from user
+    role TEXT NOT NULL DEFAULT 'user'
 );
 
 CREATE TABLE devices (
