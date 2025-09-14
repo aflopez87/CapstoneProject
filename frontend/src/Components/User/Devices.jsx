@@ -8,25 +8,38 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router"
 
-export default function AllBooks() {
-    const [books, setBooks]=useState([])
+export default function AllDevices() {
+    const [devices, setDevices]=useState([])
+    const select = async (formdata)=>{
+        const newDevice = {
+            name:formdata.get("name"),
+            wattage:formdata.get("wattage")
+        }
+        await select(newDevice)
+        navigate("/")
+    }
     const navigate = useNavigate()
     useEffect(()=>{
-        const getBooks = async ()=>{
-            const response= await axios("https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/books")
+        const getDevices = async ()=>{
+            const response= await axios("https://@localhost:3000/meec_db/users/devices")
             console.log(response.data)
-            setBooks(response.data)
+            setDevices(response.data)
         }
-        getBooks()
+        getDevices()
     }, [])
 
     return (
     <>
-    <div className="allbooks">
-        {books.map(book=><div className="book"  key={book.id} onClick={()=>navigate(`/books/${book.id}`)}>
-            <h3>{book.title}</h3>
-            <img src={book.coverimage} alt={book.title}/>
-        </div>)}
+
+    <div className="alldevices">
+        <ul>
+            {devices.map(device=><div className="device"  key={device.id} onClick={()=>navigate(`/user/devices/${devices.id}`)}>
+                <li>
+                <p>{device.name},{device.wattage}</p>
+                
+                </li>
+            </div>)}
+        </ul>
     </div>
     </>
     )
