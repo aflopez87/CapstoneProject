@@ -13,7 +13,7 @@ export default function AllBooks() {
     const navigate = useNavigate()
     useEffect(()=>{
         const getBooks = async ()=>{
-            const response= await axios("https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/books")
+            const response= await axios("https://@localhost:3000/meec_db/user/devices")
             console.log(response.data)
             setBooks(response.data)
         }
