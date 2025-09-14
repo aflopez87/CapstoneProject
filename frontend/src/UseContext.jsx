@@ -24,7 +24,7 @@ const AuthProvider = ({ children })=>{
         }
     }, [token]);
 
-    // Post/Create need the URl, the resource to post/create, and the headers to set the content type
+    // Post/Create need the URL, the resource to post/create, and the headers to set the content type
     const login = async (user)=>{
         try{
             const response = await axios.post('https://localhost:3000/users/login', user,{

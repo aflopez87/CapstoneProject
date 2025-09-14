@@ -23,7 +23,9 @@ export default function App() {
         <Link to ="/login">Login</Link>
         <Link to ="/register">Create a new Account</Link>
       </nav>
-
+      <body>
+        
+      </body>
       <Routes>
         {/* Admin routes */}
         <Route path="/admin/home" element={<AdminHome />} />
