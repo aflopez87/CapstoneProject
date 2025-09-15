@@ -49,7 +49,6 @@ router
   .post(requireBody([ "username", "password" ]), async (req, res) => {
     const { username, password } = req.body;
     const user = await authenticateUser(username, password);
-    console.log("Login body user", req.body);
     // Returns error if not a registered user or admin
     if (!user || user.role !== "admin") return res.status(403).send("Forbidden");
     const token = createToken({ id: user.id, role: user.role });

@@ -1,6 +1,5 @@
 export default function requireBody(fields) {
   return (req, res, next) => {
-    console.log("Incoming body:", req.body);
     if (!req.body || typeof req.body !== "object"){
       return res.status(400).send("Request body is required.")
     };
