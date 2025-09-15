@@ -1,7 +1,7 @@
 // TODO: Utilities page for users to select their utility of choice
 
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { AuthContext } from "../../UseContext";
 import axios from "axios"
 
@@ -9,7 +9,6 @@ import axios from "axios"
 export default function UserUtility() {
   const { token } = useContext(AuthContext);
   const [utilities, setUtilities] = useState([]);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchUtilities = async () => {
@@ -21,7 +20,7 @@ export default function UserUtility() {
         });
         setUtilities(response.data);
       } catch (err) {
-        setError(err.response?.data || "Failed to fetch utilities");
+        console.error("Failed to fetch utilities:", err);
       }
     };
 

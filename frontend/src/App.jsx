@@ -26,9 +26,9 @@ export default function App() {
       <main>
         <Routes>
           {/* Admin routes */}
-          <Route path="/admin/home" element={<AdminHome />} />
+          {/* <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/devices" element={<AdminDevices />} />
-          <Route path="/admin/utilities" element ={<AdminUtility />}/>
+          <Route path="/admin/utilities" element ={<AdminUtility />}/> */}
           {/* User routes */}
           <Route path="/users/home" element={<UserHome />} />
           <Route path="/users/devices" element={<UserDevices />} />
