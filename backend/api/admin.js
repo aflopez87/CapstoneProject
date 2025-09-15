@@ -2,42 +2,45 @@ import express from "express";
 const router = express.Router();
 
 // Middleware imports
-import getUserFromToken from "#middleware/user_from_token"; 
-import requireUser from "#middleware/require_user";         
-import requireAdmin from "#middleware/require_admin";       
-import requireBody from "#middleware/require_body";
-import { createToken } from "#utils/jwt";
+import getUserFromToken from "../middleware/user_from_token.js"; 
+import requireUser from "../middleware/require_user.js";         
+import requireAdmin from "../middleware/require_admin.js";       
+import requireBody from "../middleware/require_body.js";
+
+// JWT utility
+// generates auth token
+import { createToken } from "../utils/jwt.js";
 
 // Users imports
 import {
   getAllUsers,
-  getUserById,
+  // getUserById,
   deleteUser,
   authenticateUser
-} from "#db/queries/users";
+} from "../db/queries/users.js";
 
 // User devices imports
 import {
   getDevicesByUserId
-} from "#db/queries/user_devices";
+} from "../db/queries/user_devices.js";
 
 // Devices imports
 import {
   getDevices,
-  getDeviceById,
+  // getDeviceById,
   updateDevice,
   deleteDevice,
   createDevice
-} from "#db/queries/devices";
+} from "../db/queries/devices.js";
 
 // Utilities imports
 import {
   getUtilities,
-  getUtilityById,
+  // getUtilityById,
   updateUtility,
   deleteUtility,
   createUtility
-} from "#db/queries/utilities";
+} from "../db/queries/utilities.js";
  
 
 // Admin Login

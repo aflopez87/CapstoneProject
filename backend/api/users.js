@@ -3,36 +3,35 @@ import express from "express";
 const router = express.Router();
 
 // Middleware imports
-import getUserFromToken from "#middleware/user_from_token"; 
-import requireUser from "#middleware/require_user";       
-import requireBody from "#middleware/require_body";        
+import getUserFromToken from "../middleware/user_from_token.js"; 
+import requireUser from "../middleware/require_user.js";       
+import requireBody from "../middleware/require_body.js";        
 
 // JWT utility
 // generates auth token
-import { createToken } from "#utils/jwt";
+import { createToken } from "../utils/jwt.js";
 
 // User imports
 import {
   createUser,
   authenticateUser,
-  getUserById,
+  // getUserById,
   updateUser
-} from "#db/queries/users";
+} from "../db/queries/users.js";
 
 // User devices imports
 import {
   addUserDevice,
-  getAllUserDevices,
+  // getAllUserDevices,
   updateUserDevice,
-  deleteUserDevice,
-  getUserDeviceById
-} from "#db/queries/user_devices";
+  deleteUserDevice
+} from "../db/queries/user_devices.js";
 
 // User devices import
-import { getAllDevices } from "#db/queries/devices";
+import { getDevices } from "../db/queries/devices.js";
 
 // Utilities import
-import { getUtilities } from "#db/queries/utilities";
+import { getUtilities } from "../db/queries/utilities.js";
 
 // Apply token middleware to all routes
 router.use(getUserFromToken);
@@ -120,7 +119,7 @@ router
 router
   .route("/devices/all")
   .get(requireUser, async (req, res) => {
-    const devices = await getAllDevices();
+    const devices = await getDevices();
     res.send(devices);
   });
 

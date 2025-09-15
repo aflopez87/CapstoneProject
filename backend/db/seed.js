@@ -9,6 +9,11 @@ import { createUtility } from "./queries/utilities.js";
 
 // seed some users to test capabilities
 const seed = async()=>{
+    // TRUNCATE to empty set of tables and RESTART IDENTITY to restart sequences owned by columns of the truncated tables
+    await db.query(`
+        TRUNCATE TABLE user_devices, devices, utilities, users
+        RESTART IDENTITY CASCADE;
+        `)
     const users =[];
     
     // Creates admin account first
@@ -29,7 +34,8 @@ const seed = async()=>{
             name : faker.person.firstName() +" "+ faker.person.lastName(),
             location : faker.location.city(),
             username : faker.internet.username(),
-            password : faker.internet.password({ length: 20, memorable: true }) 
+            password : faker.internet.password({ length: 20, memorable: true }),
+            role: "user" 
         };
         console.log(newUser)
         const databaseUser = await createUser(newUser);
