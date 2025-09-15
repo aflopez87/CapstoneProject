@@ -4,7 +4,7 @@
 // Show consumption calculation based on userdevices, device wattage, device usage, and utility rates
 
 import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../UseContext";
+import { AuthContext } from "../../UseContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Pie } from "react-chartjs-2";

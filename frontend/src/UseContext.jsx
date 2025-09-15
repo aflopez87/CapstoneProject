@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
-import jwtDecode from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode"; 
 
-const AuthContext = React.createContext()
+export const AuthContext = React.createContext()
 
-const AuthProvider = ({ children })=>{
+export const AuthProvider = ({ children })=>{
     const [user, setUser] = useState(null)
     // saves token locally
     const [token, setToken] = useState(localStorage.getItem("token") || "")
@@ -70,4 +70,3 @@ const AuthProvider = ({ children })=>{
     );
 };
 
-export default {AuthContext, AuthProvider};
