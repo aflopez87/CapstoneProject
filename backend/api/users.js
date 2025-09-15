@@ -41,7 +41,9 @@ router
   .route("/register")
   .post(requireBody(["username", "password", "name", "location"]), async (req, res) => {
     const { username, password, name, location } = req.body;
-    const user = await createUser({username, password, name, location});
+    // default role for registration is user
+    const role = "user";
+    const user = await createUser({ username, password, name, location, role });
     const token = createToken({ id: user.id });
     res.status(201).send(token);
   });
@@ -49,7 +51,7 @@ router
 // Login existing user
 router
   .route("/login")
-  .post(requireBody(["username", "password"]), async (req, res) => {
+  .post(requireBody([ "username", "password" ]), async (req, res) => {
     const { username, password } = req.body;
     const user = await authenticateUser(username, password);
     // Send message if no user on file
@@ -71,7 +73,7 @@ router
   .route("/devices")
   .post(
     requireUser,
-    requireBody(["deviceId", "customDevice", "usageAlgorithm", "usageHours"]),
+    requireBody([ "deviceId", "customDevice", "usageAlgorithm", "usageHours" ]),
     async (req, res) => {
       const { deviceId, customDevice, usageAlgorithm, usageHours } = req.body;
       const userDevice = await addUserDevice(
@@ -90,7 +92,7 @@ router
   .route("/devices/:deviceId")
   .put(
     requireUser,
-    requireBody(["usageAlgorithm", "usageHours"]),
+    requireBody([ "usageAlgorithm", "usageHours" ]),
     async (req, res) => {
       const { deviceId } = req.params;
       const { usageAlgorithm, usageHours } = req.body;
@@ -130,7 +132,7 @@ router
     const utilities = await getUtilities();
     res.send(utilities);
   })
-  .post(requireUser, requireBody(["utilityId"]), async (req, res) => {
+  .post(requireUser, requireBody([ "utilityId" ]), async (req, res) => {
     const { utilityId } = req.body;
     const updatedUser = await updateUser(req.user.id, { utilityId });
     res.send(updatedUser);

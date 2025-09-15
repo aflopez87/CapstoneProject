@@ -46,9 +46,10 @@ import {
 // Admin Login
 router
   .route("/login")
-  .post(requireBody(["username", "password"]), async (req, res) => {
+  .post(requireBody([ "username", "password" ]), async (req, res) => {
     const { username, password } = req.body;
     const user = await authenticateUser(username, password);
+    console.log("Login body user", req.body);
     // Returns error if not a registered user or admin
     if (!user || user.role !== "admin") return res.status(403).send("Forbidden");
     const token = createToken({ id: user.id, role: user.role });
@@ -101,7 +102,7 @@ router
 // Add a new verified device
 router
   .route("/devices")
-  .post(requireBody(["name", "wattage"]), async (req, res) => {
+  .post(requireBody([ "name", "wattage" ]), async (req, res) => {
     const device = await createDevice(req.body);
     res.status(201).send(device);
   });
@@ -138,7 +139,7 @@ router
 // Add new utility
 router
   .route("/utilities")
-  .post(requireBody(["name", "location", "peakRate", "offPeakRate"]), async (req, res) => {
+  .post(requireBody([ "name", "location", "peakRate", "offPeakRate" ]), async (req, res) => {
     const utility = await createUtility(req.body);
     res.status(201).send(utility);
   });
