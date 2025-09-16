@@ -27,7 +27,7 @@ export const AuthProvider = ({ children })=>{
     // Post/Create need the URL, the resource to post/create, and the headers to set the content type
     const login = async (user)=>{
         try{
-            const response = await axios.post('https://localhost:3000/users/login', user,{
+            const response = await axios.post('http://localhost:3000/users/login', user,{
                 headers:{
                     "Content-Type":"application/json"
                 }
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children })=>{
 
     const register = async (newUser)=>{
         try{
-            const response = await axios.post('https://localhost:3000/users/register', newUser,{
+            const response = await axios.post('http://localhost:3000/users/register', newUser,{
                 headers:{
                     "Content-Type":"application/json"
                 }

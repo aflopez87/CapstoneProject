@@ -2,24 +2,26 @@ import { useContext } from "react";
 import { AuthContext } from "../../UseContext.jsx";
 import { useNavigate } from "react-router";
 
+
 export default function Login() {
     const {login} = useContext(AuthContext)
     const navigate = useNavigate();
     const signIn = async (formData)=>{
         const user = {
-            email:formData.get("email"),
+            username:formData.get("username"),
             password:formData.get("password")
         }
+        console.log(user);
         await login(user)
         navigate("/")
     }
     return (
     <>
     <section>
-         <h1>Login Form</h1>
+         <h1>Welcome back!</h1>
     <form action = {signIn}>
-        <label>Email:
-            <input name = "email"/>
+        <label>Username:
+            <input name = "username"/>
         </label>
         <label>Password:
             <input name = "password" type="password"/>
