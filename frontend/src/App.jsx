@@ -15,14 +15,16 @@ import Registration from "./Components/Forms/Register";
 export default function App() {
   return (
     <>
+      <header>
       <h1 className="heading">MEEC</h1>
       <nav>
         <Link to ="/home">Welcome</Link>
-        <Link to ="/users/devices">Select Your Devices</Link>
-        <Link to ="/users/utilities">View Utilities</Link>
+        <Link to ="/users/devices">Devices</Link>
+        <Link to ="/users/utilities">Utilities</Link>
         <Link to ="/login">Login</Link>
-        <Link to ="/register">Create a new Account</Link>
+        <Link to ="/register">Register </Link>
       </nav>
+      </header>
       <main>
         <Routes>
           {/* Admin routes */}

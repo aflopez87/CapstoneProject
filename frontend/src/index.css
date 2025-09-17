@@ -1,0 +1,36 @@
+.heading{
+
+
+   margin-left: 3%;
+    
+    font-style: italic;
+    color: white;
+}
+
+header{
+    display: flex;
+    background-color: navy;
+    
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    
+}
+body{
+    width: 83vw;
+    background-color: #A2CFFE;
+    ;
+}
+nav{
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    width: 40%;
+    margin-right: 3%;
+}
+a:link, a:visited{
+    color: white;
+    text-decoration: none;
+}
