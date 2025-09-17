@@ -138,4 +138,21 @@ router
     res.send(updatedUser);
   });
 
+// Pubic routes to view user page, devices, and utilities
+// Public route for user devices
+router
+  .route("/devices/public")
+  .get(async (req,res) =>{
+    const devices = await getDevices();
+    res.send(devices);
+  });
+
+// public route for utilities
+router
+  .route("/utilities/public")
+  .get(async (req,res) =>{
+    const utilities = await getUtilities();
+    res.send(utilities);
+});
+
 export default router;

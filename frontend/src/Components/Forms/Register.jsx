@@ -16,7 +16,7 @@ export default function Registration() {
     };
     return (
     <>
-    <section>
+    <section id = "register"> 
     <h1>New User Registration</h1>
     <form action = {signIn}>
         <label>Name:

@@ -1,0 +1,41 @@
+h1{
+    text-align: center;
+    color: navy;
+}
+#login, #register{
+    display: flex;
+    flex-direction: column;
+    width: 25vw;
+    background-color:rgba(255, 166, 0, 0.651);
+    margin: auto;
+    align-self: center;
+    color: navy;
+    margin-top: 100px;
+}
+#login{
+    height: 50vh;
+}
+#register {
+    height: 50vh;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+label {
+    align-items: left;
+    margin: 10px;
+}
+
+input {
+    align-self: right;
+}
+
+button {
+    align-self: center;
+    margin: 10px;
+    width: 50%;
+}

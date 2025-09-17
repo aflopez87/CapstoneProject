@@ -16,8 +16,7 @@ export default function UserHome() {
   const { user, token } = useContext(AuthContext);
   const [userDevices, setUserDevices] = useState([]);
   const [utility, setUtility] = useState(null);
-  const [monthlyBill, setMonthlyBill] = useState("");
-  const [spendingData, setSpendingData] = useState([]);
+
   const navigate = useNavigate();
 
   // GET all user devices
@@ -52,6 +51,7 @@ export default function UserHome() {
 
   // Calculate consumption and spending per device
   const calculateSpending = () => {
+    // Return if no utility or bill are selected/
     if (!utility || !monthlyBill || isNaN(monthlyBill)) return;
 
     const totalConsumption = userDevices.reduce((sum, device) => {
@@ -98,7 +98,7 @@ export default function UserHome() {
         <ul>
           {userDevices.map((device) => (
             <li key={device.id}>
-              {device.custom_device || device.name} — {device.wattage}W × {device.usage_hours} hrs
+              {device.name}: {device.wattage}W {device.usage_hours}hrs 
             </li>
           ))}
         </ul>

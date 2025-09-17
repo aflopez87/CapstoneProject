@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../../UseContext.jsx";
 import { useNavigate } from "react-router";
+import './Forms.css'
 
 
 export default function Login() {
@@ -13,11 +14,11 @@ export default function Login() {
         }
         console.log(user);
         await login(user)
-        navigate("/")
+        navigate("/home")
     }
     return (
     <>
-    <section>
+    <section id = "login">
          <h1>Welcome back!</h1>
     <form action = {signIn}>
         <label>Username:
