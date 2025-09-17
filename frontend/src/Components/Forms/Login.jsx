@@ -21,12 +21,16 @@ export default function Login() {
     <section id = "login">
          <h1>Welcome back!</h1>
     <form action = {signIn}>
-        <label>Username:
-            <input name = "username"/>
-        </label>
-        <label>Password:
+        <div className="login">
+            <label htmlFor="username">Username:</label>
+            <input name = "username" type="text"/>
+        </div>
+        
+        <div className="login">
+            <label htmlFor="password">Password:</label>
             <input name = "password" type="password"/>
-        </label>
+        </div>
+        
         <input type="submit" value="Submit" className="submit"/>
     </form>
     <button onClick={()=>navigate("/register")}>Create a new Account</button>

@@ -23,15 +23,21 @@ form {
     display: flex;
     flex-direction: column;
     margin: auto;
+    /* border: 2px solid rgb(255, 0, 0); */
+    width: 300px;
 }
 
-label {
-    align-items: left;
-    margin: 10px;
+form div{
+    margin: 10px auto 10px auto;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    /* border: 2px solid black; */
 }
 
-input {
-    align-self: right;
+form .submit { 
+    width: 60px;
+    margin: auto;
 }
 
 button {
