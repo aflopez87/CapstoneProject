@@ -1,3 +1,4 @@
+import MEECLogo from "./images/MEEC_Logo.svg"
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 // Admin components
@@ -16,13 +17,14 @@ export default function App() {
   return (
     <>
       <header>
-      <h1 className="heading">MEEC</h1>
+      <img alt="logo" src={MEECLogo} className="logo"/>
       <nav>
-        <Link to ="/home">Welcome</Link>
-        <Link to ="/users/devices">Devices</Link>
-        <Link to ="/users/utilities">Utilities</Link>
-        <Link to ="/login">Login</Link>
-        <Link to ="/register">Register </Link>
+        <Link to ="/home" id="homeLink">Home</Link>
+        {/* <Link to ="/users/devices">Devices</Link>
+        <Link to ="/users/utilities">Utilities</Link> */}
+        <Link to ="/login" id="loginlink">Login</Link>
+        <div className = "headerspace"></div>
+        <Link to ="/register" id="registerlink">Register </Link>
       </nav>
       </header>
       <main>
@@ -31,10 +33,12 @@ export default function App() {
           {/* <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/devices" element={<AdminDevices />} />
           <Route path="/admin/utilities" element ={<AdminUtility />}/> */}
+          
           {/* User routes */}
-          <Route path="/users/home" element={<UserHome />} />
-          <Route path="/users/devices" element={<UserDevices />} />
-          <Route path="/users/utilities" element ={<UserUtility/>}/>
+          <Route path="/home" element={<UserHome/>} />
+          {/* <Route path="/devices" element={<UserDevices />} />
+          <Route path="/utilities" element ={<UserUtility/>}/> */}
+          
           {/* Auth routes */}
           <Route path="/login" element ={<Login/>}/>
           <Route path="/register" element ={<Registration/>}/>

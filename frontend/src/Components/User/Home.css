@@ -1,0 +1,24 @@
+main{
+    display: flex;
+    align-items: center;
+    padding: 50px;
+}
+
+.homepage img{
+    width: 400px;
+    padding: 40px;
+}
+
+.homepage h1{
+    font-size: 3em;
+    font-weight: 750;
+    padding: 40px;
+}
+
+.homepage p{
+    padding: 40px;
+}
+
+strong{
+    font-weight: 900;
+}

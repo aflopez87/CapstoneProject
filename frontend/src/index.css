@@ -7,37 +7,52 @@
 * {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 500;
+  font-weight: 550;
   font-style: normal;
 }
 
-.heading{
-    margin-left: 3%;
-    font-style: italic;
-    color: white;
-    
+.logo{
+    padding: 30px 20px;
 }
 
 header{
     display: flex;
-    background-color: navy;
     align-items: center;
-    justify-content: space-between;
-    color: white;
+    /* justify-content: space-between; */
+    background-color: white;
+    padding: 0 50px;
 }
 body{
-    background-color: #A2CFFE;
+    background-color: #DAF6FF;
 }
+
 nav{
-    color: white;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     text-align: center;
-    width: 40%;
-    margin-right: 3%;
+    align-items: center;
+    width: 100%;
 }
-a:link, a:visited{
+
+.headerspace{
+    flex-grow: 1;
+}
+
+a {
+    padding: 20px;
+}
+
+#registerlink{
+    align-self: center;
+    margin: 20px;
+    background-color: blue;
     color: white;
+    padding: 5px;
+    border-radius: 15px;
+    width: 90px;
+}
+
+a:link, a:visited{
+    color: black;
     text-decoration: none;
 }
