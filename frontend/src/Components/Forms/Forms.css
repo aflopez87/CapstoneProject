@@ -1,47 +1,90 @@
-h1{
-    text-align: center;
-    color: navy;
+*{
+    margin: 0;
+    padding: 0;
 }
-#login, #register{
-    display: flex;
-    flex-direction: column;
-    width: 25vw;
-    background-color:rgba(255, 166, 0, 0.651);
+#register h1, #login h1{
+    margin: auto;
+}
+
+#register, #login{
+    padding: 20px 0;
+}
+
+#register{
+    display: grid;
+    width: 350px;
+    height: 450px;
+    background-color:rgba(255, 255, 255, 1);
     margin: auto;
     align-self: center;
-    color: navy;
     margin-top: 100px;
+    border-radius: 20px;
+    text-align: center;
 }
+
 #login{
-    height: 50vh;
+    display: grid;
+    width: 350px;
+    height: 300px;
+    background-color:rgba(255, 255, 255, 1);
+    margin: auto;
+    align-self: center;
+    margin-top: 100px;
+    border-radius: 20px;
+    text-align: center;
 }
-#register {
-    height: 50vh;
+
+section h1{
+    margin: 0;
+}
+
+section p{
+    margin: auto;
+    width: 70%;
+    padding: 0px;
+}
+
+
+a{
+    text-decoration: underline;
+    color: blue;
 }
 
 form {
     display: flex;
     flex-direction: column;
     margin: auto;
+    padding-top: 10px;
+    gap: 10px;
     /* border: 2px solid rgb(255, 0, 0); */
-    width: 300px;
+    width: 80%;
+    height: 100%;
 }
 
 form div{
-    margin: 10px auto 10px auto;
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
-    /* border: 2px solid black; */
-}
-
-form .submit { 
-    width: 60px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: space-between;
     margin: auto;
+    width: 100%;
+    /* border: 1px solid black; */
 }
 
-button {
+label {
+    text-align: left;
+}
+
+.submit {
     align-self: center;
-    margin: 10px;
-    width: 50%;
+    background-color: blue;
+    color: white;
+    margin: 10px auto 20px;
+    padding: 5px;
+    border-radius: 15px;
+    width: 90px;
+    border-color: blue;
+}
+
+.linkto{
+    font-size: .75em;
 }

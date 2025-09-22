@@ -17,31 +17,33 @@ export default function Registration() {
     return (
     <>
     <section id = "register"> 
-    <h1>New User Registration</h1>
+    <h1>Welcome!</h1>
+    <p>Fill out the information below to complete your registration.</p>
     <form action = {signIn}>
+        
         <div className="register">
-            <label htmlFor="name">Name:</label>
+            <label htmlFor="name">Name</label>
             <input name = "name" type = "text"/>
         </div>
         
         <div className="register">
-            <label htmlFor="location">Location:</label>
-            <input name = "location"/>
+            <label htmlFor="location">Location</label>
+            <input name = "location" type = "text"/>
         </div>
        
         <div className="register">
-            <label htmlFor="username">Username:</label>
-            <input name = "username"/>
+            <label htmlFor="username">Username</label>
+            <input name = "username" type = "text"/>
         </div>
         
         <div className="register">
-            <label>Password:</label>
+            <label htmlFor="password">Password</label>
             <input name = "password" type="password"/>
         </div>
         
         <input type="submit" value="Submit" className="submit"/>
     </form>
-     <button onClick={()=>navigate("/login")}>Already have an account? Login!</button>
+     <p className="linkto">Already registered? <a onClick={()=>navigate("/login")}>Login</a></p>
     </section>
     </>
     )
