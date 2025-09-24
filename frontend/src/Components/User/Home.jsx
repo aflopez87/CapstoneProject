@@ -9,10 +9,10 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 
 export default function UserHome() {
-  
+  const { token } = useContext(AuthContext)
   return (
     <>
-    <main className="homepage" id="loggedin">
+    <main className={token ? "loggedin" : "loggedout"} >
       <div className="hometext">
         <h1>Curious about your appliance's energy usage?</h1>
         <p><strong>My Electrical Energy Calculator</strong> estimates your appliance's energy use and cost based on your usage and utility rates, including peak and off-peak pricing.</p>
