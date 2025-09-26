@@ -22,3 +22,12 @@ main{
 strong{
     font-weight: 900;
 }
+
+.pie{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    display: grid;
+}
+
+
