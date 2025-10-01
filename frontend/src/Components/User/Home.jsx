@@ -4,10 +4,10 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../UseContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import DeviceInput from "../SubComponents/DeviceInput.js"
-import DeviceList from "../SubComponents/DeviceList.js"
-import DeviceUsage from "../SubComponents/DeviceUsage.js"
-import UtilityInput from "../SubComponents/UtilityInput.js"
+import DeviceInput from "../../SubComponents/DeviceInput.js"
+import DeviceList from "../../SubComponents/DeviceList.js"
+import DeviceUsage from "../../SubComponents/DeviceUsage.js"
+import UtilityInput from "../../SubComponents/UtilityInput.js"
 
 export default function UserHome() {
   const { token } = useContext(AuthContext)
