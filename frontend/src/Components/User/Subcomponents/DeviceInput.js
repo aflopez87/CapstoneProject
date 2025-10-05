@@ -8,7 +8,7 @@ export default function DeviceInput({ selectedDevice, setSelectedDevice, token }
     useEffect(() => {
         async function fetchDevices() {
             try{
-                const res = await axios.get("/api/users/deviecs/all", {
+                const res = await axios.get("http://localhost:3000/api/users/devices/all", {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setDeviceOptions(res.data);

@@ -7,7 +7,7 @@ export default function UtilityInput({ selectedUtility, setSelectedUtility}){
     useEffect(()=> {
         async function fetchUtilities(){
             try{
-                const res = await axios.get("/api/users/utilities/public");
+                const res = await axios.get("http://localhost:3000/api/users/utilities/public");
                 setUtilities(res.data);
             }catch(err){
                 console.error("failed to fetch utilities:", err)
