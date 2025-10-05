@@ -21,7 +21,7 @@ export default function UtilityInput({ selectedUtility, setSelectedUtility}){
             <option value="">Select utility</option>
             {utilities.map((utility) => (
                 <option key={utility.id} value={utility.name}>
-                    <span>{utility.name}</span> <span>{utility.location}</span>
+                    {utility.name} - {utility.location} - ${utility.peak_rate} - ${utility.off_peak_rate}
                 </option>
             ))}
         </select>

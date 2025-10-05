@@ -52,7 +52,7 @@ router
     // Returns error if not a registered user or admin
     if (!user || user.role !== "admin") return res.status(403).send("Forbidden");
     const token = createToken({ id: user.id, role: user.role });
-    res.send(token);
+    res.send({token});
   });
 
 // Apply token and role check to all admin routes

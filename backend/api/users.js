@@ -45,7 +45,7 @@ router
     const role = "user";
     const user = await createUser({ username, password, name, location, role });
     const token = createToken({ id: user.id });
-    res.status(201).send(token);
+    res.status(201).send({token});
   });
 
 // Login existing user
@@ -57,7 +57,7 @@ router
     // Send message if no user on file
     if (!user) return res.status(401).send("Invalid email or password");
     const token = createToken({ id: user.id });
-    res.send(token);
+    res.send({token});
   });
 
 // Get user's devices (home page)

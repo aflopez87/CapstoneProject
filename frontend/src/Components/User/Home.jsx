@@ -4,13 +4,16 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../UseContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import DeviceInput from "../../SubComponents/DeviceInput.js"
-import DeviceList from "../../SubComponents/DeviceList.js"
-import DeviceUsage from "../../SubComponents/DeviceUsage.js"
-import UtilityInput from "../../SubComponents/UtilityInput.js"
+import DeviceInput from "./Subcomponents/DeviceInput.jsx"
+import DeviceList from "./Subcomponents/DeviceList.jsx"
+import DeviceUsage from "./Subcomponents/DeviceUsage.jsx"
+import UtilityInput from "./Subcomponents/UtilityInput.jsx"
 
 export default function UserHome() {
   const { token } = useContext(AuthContext)
+  // useEffect(() => {
+  //   console.log("Device list updated:", deviceList);
+  // }, [deviceList]);
 
   // set state for each function
   const [selectedDevice, setSelectedDevice] = useState(null);
@@ -27,7 +30,7 @@ function addDevice(){
 
 // removes device from list
 function removeDevice(){
-  setDeviceList(deviceList.filter(d => d.device != selectedDevice.id));
+  setDeviceList(deviceList.filter(d => d.device.id != selectedDevice.id));
   }
   
 // calculate energy use(placeholder)
@@ -69,11 +72,11 @@ function calculateEnergyUse(){
             <label htmlFor="UtilityInput"></label>
             <UtilityInput selectedUtility={selectedUtility} setSelectedUtility={setSelectedUtility} />
             <h2>STEP 3:</h2>
-            <p>Click Calculate to see your totel energy use in the pie chart.</p>
+            <p>Click Calculate to see your total energy use in the pie chart.</p>
             <button type="button" onClick={calculateEnergyUse}>Calculate</button>
           </section>
           <section className="output-side">
-            <div class="pie"></div>
+            <div className="pie"></div>
           </section>
         </main>
         )}

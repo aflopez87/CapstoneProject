@@ -12,7 +12,7 @@ export const AuthProvider = ({ children })=>{
 
     //  Decode token on mount if it exists
     useEffect(() => {
-        if (token) {
+        if (token && token.split(".").length === 3) {
             try{
                 const decoded = jwtDecode(token);
                 setUser(decoded);
@@ -21,6 +21,10 @@ export const AuthProvider = ({ children })=>{
                 localStorage.removeItem("token");
                 setToken("");
             }
+        }else{
+            console.warn("Malformed token", token);
+            localStorage.removeItem("token");
+            setToken("");
         }
     }, [token]);
 
@@ -32,6 +36,9 @@ export const AuthProvider = ({ children })=>{
                     "Content-Type":"application/json"
                 }
             });
+
+            console.log("Received token:", response.data.token)
+
             setToken(response.data.token)
             // saves token locally
             localStorage.setItem("token", response.data.token)
