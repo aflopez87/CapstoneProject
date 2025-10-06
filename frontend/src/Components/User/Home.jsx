@@ -10,7 +10,7 @@ import DeviceUsage from "./Subcomponents/DeviceUsage.jsx"
 import UtilityInput from "./Subcomponents/UtilityInput.jsx"
 
 export default function UserHome() {
-  const { token } = useContext(AuthContext)
+  const { token, user } = useContext(AuthContext)
   // useEffect(() => {
   //   console.log("Device list updated:", deviceList);
   // }, [deviceList]);
@@ -29,8 +29,8 @@ function addDevice(){
   }
 
 // removes device from list
-function removeDevice(){
-  setDeviceList(deviceList.filter(d => d.device.id != selectedDevice.id));
+function removeDevice(index){
+  setDeviceList([...deviceList.slice(0, index), ...deviceList.slice(index + 1)]);
   }
   
 // calculate energy use(placeholder)
@@ -54,6 +54,7 @@ function calculateEnergyUse(){
         // Logged in view  
         <main className="loggedin">
           <section className="input-side">
+            <h1>Welcome {user?.name}!</h1>
             <h1>How it works:</h1>
             <h2>STEP 1:</h2>
             <p>Add the device and usage amount in the dropdown below then click the plus sign to add your device to the device list or the minus button to remove a selected device.</p>
@@ -66,7 +67,7 @@ function calculateEnergyUse(){
                 <button type="button" onClick={removeDevice} className="device-list-button">-</button>
               </div>
             <label htmlFor="DeviceList"></label>
-              <DeviceList deviceList={deviceList} setDeviceList={setDeviceList} />
+              <DeviceList deviceList={deviceList} setDeviceList={setDeviceList} removeDevice={removeDevice} />
             <h2>STEP 2:</h2>
             <p>Select your energy provider from the dropdown.</p>
             <label htmlFor="UtilityInput"></label>

@@ -44,7 +44,7 @@ router
     // default role for registration is user
     const role = "user";
     const user = await createUser({ username, password, name, location, role });
-    const token = createToken({ id: user.id });
+    const token = createToken({ id: user.id, name: user.name });
     res.status(201).send({token});
   });
 
@@ -56,7 +56,7 @@ router
     const user = await authenticateUser(username, password);
     // Send message if no user on file
     if (!user) return res.status(401).send("Invalid email or password");
-    const token = createToken({ id: user.id });
+    const token = createToken({ id: user.id, name: user.name });
     res.send({token});
   });
 

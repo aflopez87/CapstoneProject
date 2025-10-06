@@ -23,6 +23,7 @@ export default function App() {
   const navigate = useNavigate();
   
   const handleLogout = () => {
+    console.log("Logout clicked")
     setToken(null);
     localStorage.removeItem("token");
     navigate("/login");

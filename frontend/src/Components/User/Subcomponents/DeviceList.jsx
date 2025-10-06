@@ -1,10 +1,10 @@
 export default function DeviceList( { deviceList, removeDevice }) {
     return(
         <div>
-            <ul>{deviceList.map((device) => (
-                <li key={device.id}>
-                    {device.name} - {device.hours} hrs/day
-                    <button onClick={() => removeDevice(device.id)}>-</button>
+            <ul>{deviceList.map(({device, hours}, index) => (
+                <li key={index}>
+                    {device} - {hours} hrs/day
+                    <button onClick={() => removeDevice(index)}>-</button>
                 </li>
             ))}
             </ul>

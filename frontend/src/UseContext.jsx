@@ -7,7 +7,10 @@ export const AuthContext = React.createContext()
 export const AuthProvider = ({ children })=>{
     const [user, setUser] = useState(null)
     // saves token locally
-    const [token, setToken] = useState(localStorage.getItem("token") || "")
+    const [token, setToken] = useState(() =>{
+        const stored = localStorage.getItem("token");
+        return stored && stored.split(".").length === 3 ? stored : null;
+    })
     const [apiMessage, setApiMessage] = useState("Success!")
 
     //  Decode token on mount if it exists
@@ -71,7 +74,7 @@ export const AuthProvider = ({ children })=>{
     }
 
     return(
-    <AuthContext.Provider value = {{ user, token, login, register, logout, apiMessage, setUser }}>
+    <AuthContext.Provider value = {{ user, token, setToken, login, register, logout, apiMessage, setUser }}>
         {children}
     </AuthContext.Provider>
     );
