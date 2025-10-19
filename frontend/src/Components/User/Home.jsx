@@ -56,6 +56,7 @@ function calculateEnergyUse(){
           <section className="input-side">
             <h1>Welcome {user?.name}!</h1>
             <h1>How it works:</h1>
+            
             <h2>STEP 1:</h2>
             <p>Add the device and usage amount in the dropdown below then click the plus sign to add your device to the device list or the minus button to remove a selected device.</p>
               <div className="deviceinput">
@@ -66,18 +67,23 @@ function calculateEnergyUse(){
                 <button type="button" onClick={addDevice} className="device-list-button">+</button>
                 <button type="button" onClick={removeDevice} className="device-list-button">-</button>
               </div>
-            <label htmlFor="DeviceList"></label>
+            <label htmlFor="DeviceList">Your Devices</label>
               <DeviceList deviceList={deviceList} setDeviceList={setDeviceList} removeDevice={removeDevice} />
+            
             <h2>STEP 2:</h2>
             <p>Select your energy provider from the dropdown.</p>
-            <label htmlFor="UtilityInput"></label>
+            <label htmlFor="UtilityInput">Energy Provider, Service Area, Peakrate and Offrate</label>
             <UtilityInput selectedUtility={selectedUtility} setSelectedUtility={setSelectedUtility} />
+            
             <h2>STEP 3:</h2>
             <p>Click Calculate to see your total energy use in the pie chart.</p>
             <button type="button" onClick={calculateEnergyUse}>Calculate</button>
           </section>
+          
           <section className="output-side">
+            <h3 className="pie-title">Energy Used</h3>
             <div className="pie"></div>
+            <h3>Cost Per Year:</h3>
           </section>
         </main>
         )}
