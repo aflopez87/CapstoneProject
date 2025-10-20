@@ -60,30 +60,38 @@ function calculateEnergyUse(){
             <h2>STEP 1:</h2>
             <p>Add the device and usage amount in the dropdown below then click the plus sign to add your device to the device list or the minus button to remove a selected device.</p>
               <div className="deviceinput">
-                <label htmlFor="DeviceInput"></label>
-                <DeviceInput setSelectedDevice = {setSelectedDevice} token={token} />
-                <label htmlFor="DeviceUsage">Usage</label>
-                <DeviceUsage setUsageHours={setUsageHours} />
+                <div>
+                  <label htmlFor="DeviceInput">Device</label><br/>
+                  <DeviceInput setSelectedDevice = {setSelectedDevice} token={token} />
+                </div>
+                <div>
+                  <label htmlFor="DeviceUsage">Usage</label><br/>
+                  <DeviceUsage setUsageHours={setUsageHours} />
+                </div>
                 <button type="button" onClick={addDevice} className="device-list-button">+</button>
-                <button type="button" onClick={removeDevice} className="device-list-button">-</button>
               </div>
             <label htmlFor="DeviceList">Your Devices</label>
               <DeviceList deviceList={deviceList} setDeviceList={setDeviceList} removeDevice={removeDevice} />
             
             <h2>STEP 2:</h2>
-            <p>Select your energy provider from the dropdown.</p>
-            <label htmlFor="UtilityInput">Energy Provider, Service Area, Peakrate and Offrate</label>
-            <UtilityInput selectedUtility={selectedUtility} setSelectedUtility={setSelectedUtility} />
+            <div>
+              <p>Select your energy provider from the dropdown.</p>
+              <label htmlFor="UtilityInput">Energy Provider - Service Area - Peak rate and Off-Peak rate</label>
+              <UtilityInput selectedUtility={selectedUtility} setSelectedUtility={setSelectedUtility} />
+            </div>
             
             <h2>STEP 3:</h2>
-            <p>Click Calculate to see your total energy use in the pie chart.</p>
-            <button type="button" onClick={calculateEnergyUse}>Calculate</button>
+            <div>
+              <p>Click Calculate to see your total energy use in the pie chart.</p>
+              <button type="button" onClick={calculateEnergyUse} className="calculate">Calculate</button>
+            </div>
           </section>
           
           <section className="output-side">
             <h3 className="pie-title">Energy Used</h3>
             <div className="pie"></div>
             <h3>Cost Per Year:</h3>
+            <h3 className="result">$700</h3>
           </section>
         </main>
         )}
