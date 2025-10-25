@@ -20,11 +20,29 @@ export default function UserHome() {
   const [usageHours, setUsageHours] = useState("");
   const [deviceList, setDeviceList] = useState([]);
   const [selectedUtility, setSelectedUtility] = useState("");
+  const [costBreakdown, setCostBreakdown] = useState([]);
+  const [totalCost, setTotalCost] = useState(0);
 
 // adds device to list
 function addDevice(){
   if (!selectedDevice || !usageHours) return;
-  const newDevice = {device: selectedDevice, hours: usageHours}
+  
+  // Convert usageHours to a number
+  const hours = parseFloat(usageHours);
+
+  // Randomize rateType based on usage:
+  // - Higher useage hours increase chance of "peak"
+  // - Lower usage hours increase chance of "offpeak"
+  // - Example: 18 hours/day is approximately 75% chance of "peak"
+  const rateType = Math.random() < (hours / 24) ? "peak" : "offPeak"
+  
+  const newDevice = {
+    device: selectedDevice, 
+    hours,
+    rateType
+  };
+
+  // Add device to list
   setDeviceList([...deviceList, newDevice]);
   }
 
@@ -35,9 +53,28 @@ function removeDevice(index){
   
 // calculate energy use(placeholder)
 function calculateEnergyUse(){
-  console.log("Calculating energy use for:", deviceList, selectedUtility)
-}
+  // Formula used
+  // costPerYear = device.kw * hours * 365 * rate
+  if (!selectedUtility || deviceList.length === 0) return;
 
+  const rateMap = {
+    peak: selectedUtility.peakRate,
+    offPeak: selectedUtility.offPeakRate
+  }
+
+  let totalCost = 0;
+  let breakdown = [];
+
+  for (const { device, hours, rateType } of deviceList) {
+    const rate = rateMap[rateType];
+    const cost = device.kw * hours * 365 * rate;
+    totalCost += cost;
+    breakdown.push({ name: device.name, cost, rateType })
+  }
+
+  setTotalCost(totalCost);
+  setCostBreakdown(breakdown);
+}
 
   return (
     <>
@@ -76,7 +113,7 @@ function calculateEnergyUse(){
             <h2>STEP 2:</h2>
             <div>
               <p>Select your energy provider from the dropdown.</p>
-              <label htmlFor="UtilityInput">Energy Provider - Service Area - Peak rate and Off-Peak rate</label>
+              <label htmlFor="UtilityInput">Energy Provider - Service Area - Peak rate and Off-Peak rate</label><br/>
               <UtilityInput selectedUtility={selectedUtility} setSelectedUtility={setSelectedUtility} />
             </div>
             
@@ -88,10 +125,34 @@ function calculateEnergyUse(){
           </section>
           
           <section className="output-side">
+            
+            {/* Pie Chart */}
             <h3 className="pie-title">Energy Used</h3>
-            <div className="pie"></div>
+            <div className="pie" style={{
+              background: `conic-gradient(
+              ${costBreakdown.map((d, i) => {
+                const start = costBreakdown.slice(0, i).reduce((sum, b) => sum + b.cost, 0);
+                const end = start + d.cost;
+                const startDeg = (start / totalCost) * 360;
+                const endDeg = (end / totalCost) * 360;
+                const color = ["lightblue", "grey", "blue", "orange", "green"][i % 5];
+                return `${color} ${startDeg}deg ${endDeg}deg`;
+              }).join(",")}
+            )`
+            }}></div>
+            
             <h3>Cost Per Year:</h3>
-            <h3 className="result">$700</h3>
+            <h3 className="result">${totalCost.toFixed(2)}</h3>
+            
+            {/* Breakdown List */}
+            <ul>
+              {costBreakdown.map((d, i) => (
+                <li key={i}>
+                  {d.name} ({d.rateType}): ${d.cost.toFixed(2)}
+                </li>
+              ))}
+            </ul>
+
           </section>
         </main>
         )}

@@ -1,3 +1,7 @@
-export default function calculateEnergyUse({onClick}){
-    return <button onCLick={onClick}>-</button> 
+export default function CalculateEnergyUse({ onClick }){
+    return (
+    <button onClick={onClick} className="calculate">
+        Calculate
+    </button> 
+    );
 };

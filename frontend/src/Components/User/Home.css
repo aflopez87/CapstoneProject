@@ -50,7 +50,7 @@ section.input-side h2{
 section.input-side .deviceinput{
     display: flex;
     gap: 10px;
-    width: 70%;
+    width: 80%;
 }
 
 section.input-side .deviceinput button{
@@ -120,19 +120,19 @@ section.output-side{
 }
 
 /* Pie chart */
-.pie {
-  /* (A1) CIRCLE */
+/* .pie {
+  (A1) CIRCLE
   margin: auto;
   width: 400px; height: 400px;
   border-radius: 50%;
  
-  /* (A2) SEGMENTS */
+  (A2) SEGMENTS
   background: conic-gradient(
     lightblue 0deg 45deg,
     grey 45deg 190deg,
     blue 190deg 360deg
   );
-}
+} */
 
 section.output-side h3{
     text-align: center;
